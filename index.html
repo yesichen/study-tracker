@@ -66,6 +66,11 @@
       max-width: 400px;
     }
 
+    /* ⬇️ 修复登录表单布局（这是之前漏掉的） */
+    #login-form { display: flex; flex-direction: column; gap: 12px; }
+    #login-form input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
+    #login-form button { width: 100%; }
+
     /* === 猫头鹰容器 === */
     .owl-container { margin-bottom: 15px; display: flex; justify-content: center; width: 100%; }
     .owl { position: relative; width: 120px; height: 120px; transition: all 0.3s ease; }
@@ -108,7 +113,7 @@
     <h1 style="text-align: center;">📚 StudyNotes</h1>
     <p style="text-align:center; color:#666; margin-bottom:20px;">个人学习进度记录</p>
     
-    <!-- 注意：这里去掉了 onfocus 和 onblur，所有动画逻辑统一由 js/app.js 处理 -->
+    <!-- 输入框无需内联事件，统一由 js/app.js 处理动画 -->
     <form id="login-form">
       <input type="email" id="email" placeholder="邮箱" required>
       <input type="password" id="password" placeholder="密码" required>
