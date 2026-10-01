@@ -54,10 +54,30 @@
   </style>
 </head>
 <body>
-  <!-- 登录界面 -->
+    <!-- 登录界面（居中布局 + 猫头鹰动画） -->
   <div id="login-container" class="container">
-    <h1>📚 StudyNotes</h1>
+    <div class="owl-container">
+      <div class="owl" id="owl">
+        <!-- 耳朵 -->
+        <div class="owl-ear left"></div>
+        <div class="owl-ear right"></div>
+        <!-- 脸 -->
+        <div class="owl-face">
+          <!-- 眼睛 -->
+          <div class="owl-eye left"><div class="owl-pupil"></div></div>
+          <div class="owl-eye right"><div class="owl-pupil"></div></div>
+          <!-- 嘴巴 -->
+          <div class="owl-beak"></div>
+        </div>
+        <!-- 翅膀（用于遮眼） -->
+        <div class="owl-wing left"></div>
+        <div class="owl-wing right"></div>
+      </div>
+    </div>
+    
+    <h1 style="text-align: center;">📚 StudyNotes</h1>
     <p style="text-align:center; color:#666; margin-bottom:20px;">个人学习进度记录</p>
+    
     <form id="login-form">
       <input type="email" id="email" placeholder="邮箱" required>
       <input type="password" id="password" placeholder="密码" required>
