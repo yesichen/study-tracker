@@ -1,6 +1,31 @@
 import { supabase } from './supabase.js';
 
 // ==========================================
+// 0. 猫头鹰交互动画（统一在此处绑定，避免内联失效）
+// ==========================================
+const owl = document.getElementById('owl');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+
+if (owl && emailInput && passwordInput) {
+  emailInput.addEventListener('focus', () => {
+    owl.classList.add('typing-email');
+    owl.classList.remove('typing-password');
+  });
+  emailInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-email');
+  });
+
+  passwordInput.addEventListener('focus', () => {
+    owl.classList.add('typing-password');
+    owl.classList.remove('typing-email');
+  });
+  passwordInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-password');
+  });
+}
+
+// ==========================================
 // 1. 页面元素与初始化
 // ==========================================
 const loginContainer = document.getElementById('login-container');
@@ -12,7 +37,7 @@ const recordsList = document.getElementById('records-list');
 
 document.getElementById('record-date').valueAsDate = new Date();
 
-// === 新增工具函数：获取本地日期字符串，避免 UTC 时区导致日期错位 ===
+// === 工具函数：获取本地日期字符串，彻底解决 UTC 时区错位 ===
 function formatLocalDate(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -113,18 +138,14 @@ function calcStreak(records) {
   return { current, max };
 }
 
-// === 修复热力图生成逻辑（动态计算日期范围，不再写死 53 周） ===
+// === 修复热力图生成逻辑（动态计算日期范围） ===
 function renderHeatmap(records) {
   const DAY = 86400000;
   const today = new Date();
-  // 将今天的时间部分归零，只保留日期，避免时间干扰
   const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   
-  // 找到本周的星期六（作为网格的结束日期）
-  const dayOfWeek = todayMidnight.getDay(); // 0 是星期天，6 是星期六
+  const dayOfWeek = todayMidnight.getDay(); 
   const endOfWeek = new Date(todayMidnight.getTime() + (6 - dayOfWeek) * DAY);
-  
-  // 找到网格的开始日期（往前推 52 周 + 本周的星期天，确保刚好覆盖一年）
   const start = new Date(endOfWeek.getTime() - (52 * 7 + 6) * DAY);
 
   const countMap = {};
@@ -135,7 +156,6 @@ function renderHeatmap(records) {
   const grid = document.getElementById('heatmap-grid');
   grid.innerHTML = '';
 
-  // 动态循环生成每一天的格子
   let current = new Date(start);
   while (current <= endOfWeek) {
     const dateStr = formatLocalDate(current);
@@ -147,7 +167,6 @@ function renderHeatmap(records) {
     cell.dataset.level = level;
     cell.dataset.date = dateStr;
     cell.title = `${dateStr}：${count} 条记录`;
-    // 未来的日期隐藏
     if (current > todayMidnight) cell.style.visibility = 'hidden';
     grid.appendChild(cell);
 
@@ -155,7 +174,7 @@ function renderHeatmap(records) {
   }
 }
 
-// === 修复记录列表：增加删除按钮和图片点击放大 ===
+// === 渲染记录列表：增加删除按钮和图片点击放大 ===
 function renderRecordsList(records) {
   if (records.length === 0) {
     recordsList.innerHTML = '<p style="color:#666;">暂无记录</p>';
