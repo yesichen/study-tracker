@@ -1,32 +1,7 @@
 import { supabase } from './supabase.js';
 
 // ==========================================
-// 1. 猫头鹰交互动画（优先绑定，确保效果生效）
-// ==========================================
-const owl = document.getElementById('owl');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
-
-if (owl && emailInput && passwordInput) {
-  emailInput.addEventListener('focus', () => {
-    owl.classList.add('typing-email');
-    owl.classList.remove('typing-password');
-  });
-  emailInput.addEventListener('blur', () => {
-    owl.classList.remove('typing-email');
-  });
-
-  passwordInput.addEventListener('focus', () => {
-    owl.classList.add('typing-password');
-    owl.classList.remove('typing-email');
-  });
-  passwordInput.addEventListener('blur', () => {
-    owl.classList.remove('typing-password');
-  });
-}
-
-// ==========================================
-// 2. 页面元素与初始化
+// 1. 页面元素与初始化
 // ==========================================
 const loginContainer = document.getElementById('login-container');
 const dashboardContainer = document.getElementById('dashboard-container');
@@ -38,7 +13,7 @@ const recordsList = document.getElementById('records-list');
 document.getElementById('record-date').valueAsDate = new Date();
 
 // ==========================================
-// 3. 登录与鉴权逻辑
+// 2. 登录与鉴权逻辑
 // ==========================================
 async function checkAuth() {
   const { data: { user } } = await supabase.auth.getUser();
@@ -74,7 +49,7 @@ async function showDashboard(user) {
 }
 
 // ==========================================
-// 4. 数据加载与渲染逻辑
+// 3. 数据加载与渲染逻辑
 // ==========================================
 async function loadRecords() {
   const { data: records, error } = await supabase
@@ -128,6 +103,14 @@ function calcStreak(records) {
   return { current, max };
 }
 
+// === 修复热力图时区问题：使用本地日期字符串 ===
+function formatLocalDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function renderHeatmap(records) {
   const DAY = 86400000;
   const WEEKS = 53;
@@ -145,7 +128,7 @@ function renderHeatmap(records) {
 
   for (let i = 0; i < WEEKS * 7; i++) {
     const d = new Date(start.getTime() + i * DAY);
-    const dateStr = d.toISOString().slice(0, 10);
+    const dateStr = formatLocalDate(d); // 使用本地时间，避免 UTC 错位
     const count = countMap[dateStr] || 0;
     const level = count === 0 ? 0 : count <= 2 ? 1 : count <= 5 ? 2 : count <= 10 ? 3 : 4;
 
@@ -159,29 +142,50 @@ function renderHeatmap(records) {
   }
 }
 
+// === 修复记录列表：增加删除按钮和图片点击放大 ===
 function renderRecordsList(records) {
   if (records.length === 0) {
     recordsList.innerHTML = '<p style="color:#666;">暂无记录</p>';
     return;
   }
   recordsList.innerHTML = records.map(r => `
-    <div class="record-item">
+    <div class="record-item" data-id="${r.id}">
       <div class="record-header">
         <span class="record-date">${r.study_date}</span>
-        <span class="record-status ${r.is_completed ? 'completed' : ''}">
-          ${r.is_completed ? '✅ 已完成' : '⏳ 未完成'}
-        </span>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span class="record-status ${r.is_completed ? 'completed' : ''}">
+            ${r.is_completed ? '✅ 已完成' : '⏳ 未完成'}
+          </span>
+          <button class="delete-btn" data-id="${r.id}" style="background:#ef4444; color:white; border:none; border-radius:4px; padding:2px 8px; cursor:pointer; font-size:12px;">删除</button>
+        </div>
       </div>
       <div class="record-content">
         ${r.content ? marked.parse(r.content) : ''}
         ${r.images && r.images.length > 0 
-          ? r.images.map(url => `<img src="${url}" alt="学习图片">`).join('') 
+          ? r.images.map(url => `<a href="${url}" target="_blank"><img src="${url}" alt="学习图片" style="cursor:pointer;"></a>`).join('') 
           : ''}
       </div>
     </div>
   `).join('');
+
+  // 绑定删除事件
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      if (!confirm('确定要删除这条记录吗？')) return;
+      const id = e.target.dataset.id;
+      const { error } = await supabase.from('study_records').delete().eq('id', id);
+      if (error) {
+        alert('删除失败：' + error.message);
+      } else {
+        await loadRecords();
+      }
+    });
+  });
 }
 
+// ==========================================
+// 4. 表单提交逻辑
+// ==========================================
 recordForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const date = document.getElementById('record-date').value;
