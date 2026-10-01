@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyNotes - 我的学习进度</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>📚 我的学习进度</h1>
+    <p style="text-align:center; color:#666; margin-bottom:20px;">仅展示已完成的记录</p>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-days">0</div>
+        <div class="stat-label">总完成天数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="current-streak">0</div>
+        <div class="stat-label">当前连续打卡</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="max-streak">0</div>
+        <div class="stat-label">最长连续打卡</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔥 学习热力图</h2>
+      <div class="heatmap-wrapper">
+        <div id="heatmap-grid" class="heatmap-grid"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>📝 已完成笔记</h2>
+      <div id="share-records-list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/share.js"></script>
+</body>
+</html>
