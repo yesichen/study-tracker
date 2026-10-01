@@ -1,6 +1,33 @@
 import { supabase } from './supabase.js';
 
-// 页面元素
+// ==========================================
+// 1. 猫头鹰交互动画（优先绑定，确保效果生效）
+// ==========================================
+const owl = document.getElementById('owl');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+
+if (owl && emailInput && passwordInput) {
+  emailInput.addEventListener('focus', () => {
+    owl.classList.add('typing-email');
+    owl.classList.remove('typing-password');
+  });
+  emailInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-email');
+  });
+
+  passwordInput.addEventListener('focus', () => {
+    owl.classList.add('typing-password');
+    owl.classList.remove('typing-email');
+  });
+  passwordInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-password');
+  });
+}
+
+// ==========================================
+// 2. 页面元素与初始化
+// ==========================================
 const loginContainer = document.getElementById('login-container');
 const dashboardContainer = document.getElementById('dashboard-container');
 const loginForm = document.getElementById('login-form');
@@ -8,10 +35,11 @@ const logoutBtn = document.getElementById('logout-btn');
 const recordForm = document.getElementById('record-form');
 const recordsList = document.getElementById('records-list');
 
-// 初始化
 document.getElementById('record-date').valueAsDate = new Date();
 
-// 检查登录状态
+// ==========================================
+// 3. 登录与鉴权逻辑
+// ==========================================
 async function checkAuth() {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
@@ -22,7 +50,6 @@ async function checkAuth() {
   }
 }
 
-// 登录
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const email = document.getElementById('email').value;
@@ -35,20 +62,20 @@ loginForm.addEventListener('submit', async (e) => {
   }
 });
 
-// 退出
 logoutBtn.addEventListener('click', async () => {
   await supabase.auth.signOut();
   location.reload();
 });
 
-// 显示主面板
 async function showDashboard(user) {
   loginContainer.classList.add('hidden');
   dashboardContainer.classList.remove('hidden');
   await loadRecords();
 }
 
-// 加载数据并渲染
+// ==========================================
+// 4. 数据加载与渲染逻辑
+// ==========================================
 async function loadRecords() {
   const { data: records, error } = await supabase
     .from('study_records')
@@ -62,7 +89,6 @@ async function loadRecords() {
   renderRecordsList(records);
 }
 
-// 渲染统计
 function renderStats(records) {
   const completedRecords = records.filter(r => r.is_completed);
   const uniqueDays = [...new Set(completedRecords.map(r => r.study_date))];
@@ -75,7 +101,6 @@ function renderStats(records) {
   document.getElementById('max-streak').textContent = streak.max;
 }
 
-// 连续打卡计算
 function calcStreak(records) {
   const dates = [...new Set(
     records.filter(r => r.is_completed).map(r => r.study_date)
@@ -103,7 +128,6 @@ function calcStreak(records) {
   return { current, max };
 }
 
-// 渲染热力图
 function renderHeatmap(records) {
   const DAY = 86400000;
   const WEEKS = 53;
@@ -135,7 +159,6 @@ function renderHeatmap(records) {
   }
 }
 
-// 渲染记录列表
 function renderRecordsList(records) {
   if (records.length === 0) {
     recordsList.innerHTML = '<p style="color:#666;">暂无记录</p>';
@@ -159,7 +182,6 @@ function renderRecordsList(records) {
   `).join('');
 }
 
-// 添加记录
 recordForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const date = document.getElementById('record-date').value;
@@ -201,29 +223,6 @@ recordForm.addEventListener('submit', async (e) => {
     alert('记录已保存！');
   }
 });
-// === 猫头鹰交互动画 ===
-const owl = document.getElementById('owl');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
 
-if (emailInput && passwordInput && owl) {
-  // 聚焦邮箱输入框：眼睛睁开
-  emailInput.addEventListener('focus', () => {
-    owl.classList.add('typing-email');
-    owl.classList.remove('typing-password');
-  });
-  emailInput.addEventListener('blur', () => {
-    owl.classList.remove('typing-email');
-  });
-
-  // 聚焦密码输入框：翅膀遮眼
-  passwordInput.addEventListener('focus', () => {
-    owl.classList.add('typing-password');
-    owl.classList.remove('typing-email');
-  });
-  passwordInput.addEventListener('blur', () => {
-    owl.classList.remove('typing-password');
-  });
-}
 // 启动
 checkAuth();
