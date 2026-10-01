@@ -201,6 +201,29 @@ recordForm.addEventListener('submit', async (e) => {
     alert('记录已保存！');
   }
 });
+// === 猫头鹰交互动画 ===
+const owl = document.getElementById('owl');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
 
+if (emailInput && passwordInput && owl) {
+  // 聚焦邮箱输入框：眼睛睁开
+  emailInput.addEventListener('focus', () => {
+    owl.classList.add('typing-email');
+    owl.classList.remove('typing-password');
+  });
+  emailInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-email');
+  });
+
+  // 聚焦密码输入框：翅膀遮眼
+  passwordInput.addEventListener('focus', () => {
+    owl.classList.add('typing-password');
+    owl.classList.remove('typing-email');
+  });
+  passwordInput.addEventListener('blur', () => {
+    owl.classList.remove('typing-password');
+  });
+}
 // 启动
 checkAuth();
