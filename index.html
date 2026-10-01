@@ -17,7 +17,6 @@
     .hidden { display: none !important; }
     h1 { font-size: 24px; margin-bottom: 20px; }
     h2 { font-size: 18px; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-    #login-form input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; }
     button, .btn-link { padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; transition: 0.2s; text-decoration: none; display: inline-block; }
     button[type="submit"], .btn-primary { width: 100%; background: var(--primary); color: white; font-weight: 600; padding: 10px; }
     button[type="submit"]:hover, .btn-primary:hover { background: var(--primary-hover); }
@@ -51,9 +50,10 @@
     .record-content p { margin-bottom: 8px; }
     .record-content pre { background: #f6f8fa; padding: 10px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
     .record-content code { background: #f6f8fa; padding: 2px 4px; border-radius: 4px; font-size: 13px; }
-        /* === 登录页居中布局 === */
+
+    /* === 登录页居中布局 === */
     #login-container {
-      min-height: calc(100vh - 40px); /* 减去 body 的 padding */
+      min-height: calc(100vh - 40px);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -67,122 +67,39 @@
     }
 
     /* === 猫头鹰容器 === */
-    .owl-container {
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
-    .owl {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      transition: all 0.3s ease;
-    }
-    /* 猫头鹰耳朵 */
-    .owl-ear {
-      position: absolute;
-      top: 0;
-      width: 0;
-      height: 0;
-      border-left: 20px solid transparent;
-      border-right: 20px solid transparent;
-      border-bottom: 30px solid #A67B5B;
-    }
+    .owl-container { margin-bottom: 15px; display: flex; justify-content: center; width: 100%; }
+    .owl { position: relative; width: 120px; height: 120px; transition: all 0.3s ease; }
+    .owl-ear { position: absolute; top: 0; width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 30px solid #A67B5B; }
     .owl-ear.left { left: 10px; transform: rotate(-20deg); }
     .owl-ear.right { right: 10px; transform: rotate(20deg); }
-
-    /* 猫头鹰脸 */
-    .owl-face {
-      position: absolute;
-      top: 20px;
-      left: 0;
-      width: 120px;
-      height: 90px;
-      background: #E6C28C;
-      border-radius: 50%;
-      overflow: hidden;
-      box-shadow: inset 0 -10px 0 rgba(0,0,0,0.05);
-    }
-    /* 猫头鹰眼睛 */
-    .owl-eye {
-      position: absolute;
-      top: 20px;
-      width: 40px;
-      height: 40px;
-      background: #fff;
-      border-radius: 50%;
-      border: 3px solid #5C4033;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
+    .owl-face { position: absolute; top: 20px; left: 0; width: 120px; height: 90px; background: #E6C28C; border-radius: 50%; overflow: hidden; box-shadow: inset 0 -10px 0 rgba(0,0,0,0.05); }
+    .owl-eye { position: absolute; top: 20px; width: 40px; height: 40px; background: #fff; border-radius: 50%; border: 3px solid #5C4033; overflow: hidden; transition: all 0.3s ease; }
     .owl-eye.left { left: 15px; }
     .owl-eye.right { right: 15px; }
-    .owl-pupil {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 18px;
-      height: 18px;
-      background: #000;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-    }
-    /* 猫头鹰嘴巴 */
-    .owl-beak {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 12px solid #E8A317;
-    }
-    /* 猫头鹰翅膀 */
-    .owl-wing {
-      position: absolute;
-      bottom: -10px;
-      width: 35px;
-      height: 70px;
-      background: #A67B5B;
-      border-radius: 20px;
-      transition: all 0.3s ease;
-      z-index: 10;
-    }
+    .owl-pupil { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 18px; height: 18px; background: #000; border-radius: 50%; transition: all 0.3s ease; }
+    .owl-beak { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 12px solid #E8A317; }
+    .owl-wing { position: absolute; bottom: -10px; width: 35px; height: 70px; background: #A67B5B; border-radius: 20px; transition: all 0.3s ease; z-index: 10; }
     .owl-wing.left { left: -5px; transform-origin: bottom center; }
     .owl-wing.right { right: -5px; transform-origin: bottom center; }
-
-    /* === 动画状态 === */
-    /* 输入账号：眼睛睁大 */
     .owl.typing-email .owl-pupil { width: 24px; height: 24px; }
     .owl.typing-email .owl-eye { top: 15px; height: 45px; }
-
-    /* 输入密码：翅膀抬起遮住眼睛 */
     .owl.typing-password .owl-wing.left { bottom: 30px; left: 15px; transform: rotate(-40deg); }
     .owl.typing-password .owl-wing.right { bottom: 30px; right: 15px; transform: rotate(40deg); }
     .owl.typing-password .owl-pupil { width: 10px; height: 10px; }
   </style>
 </head>
 <body>
-    <!-- 登录界面（居中布局 + 猫头鹰动画） -->
+  <!-- 登录界面 -->
   <div id="login-container" class="container">
     <div class="owl-container">
       <div class="owl" id="owl">
-        <!-- 耳朵 -->
         <div class="owl-ear left"></div>
         <div class="owl-ear right"></div>
-        <!-- 脸 -->
         <div class="owl-face">
-          <!-- 眼睛 -->
           <div class="owl-eye left"><div class="owl-pupil"></div></div>
           <div class="owl-eye right"><div class="owl-pupil"></div></div>
-          <!-- 嘴巴 -->
           <div class="owl-beak"></div>
         </div>
-        <!-- 翅膀（用于遮眼） -->
         <div class="owl-wing left"></div>
         <div class="owl-wing right"></div>
       </div>
@@ -191,6 +108,7 @@
     <h1 style="text-align: center;">📚 StudyNotes</h1>
     <p style="text-align:center; color:#666; margin-bottom:20px;">个人学习进度记录</p>
     
+    <!-- 注意：这里去掉了 onfocus 和 onblur，所有动画逻辑统一由 js/app.js 处理 -->
     <form id="login-form">
       <input type="email" id="email" placeholder="邮箱" required>
       <input type="password" id="password" placeholder="密码" required>
@@ -208,54 +126,31 @@
       </div>
     </div>
 
-    <!-- 统计数据 -->
     <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value" id="total-days">0</div>
-        <div class="stat-label">总完成天数</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="current-streak">0</div>
-        <div class="stat-label">当前连续打卡</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="max-streak">0</div>
-        <div class="stat-label">最长连续打卡</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-value" id="total-notes">0</div>
-        <div class="stat-label">笔记总数</div>
-      </div>
+      <div class="stat-card"><div class="stat-value" id="total-days">0</div><div class="stat-label">总完成天数</div></div>
+      <div class="stat-card"><div class="stat-value" id="current-streak">0</div><div class="stat-label">当前连续打卡</div></div>
+      <div class="stat-card"><div class="stat-value" id="max-streak">0</div><div class="stat-label">最长连续打卡</div></div>
+      <div class="stat-card"><div class="stat-value" id="total-notes">0</div><div class="stat-label">笔记总数</div></div>
     </div>
 
-    <!-- 日历热力图 -->
     <div class="section">
       <h2>🔥 学习热力图</h2>
-      <div class="heatmap-wrapper">
-        <div id="heatmap-grid" class="heatmap-grid"></div>
-      </div>
+      <div class="heatmap-wrapper"><div id="heatmap-grid" class="heatmap-grid"></div></div>
     </div>
 
-    <!-- 添加记录 -->
     <div class="section">
       <h2>✍️ 添加今日记录</h2>
       <form id="record-form">
         <div class="form-row">
-          <label>日期：</label>
-          <input type="date" id="record-date" required>
-          <label style="margin-left:20px;">状态：</label>
-          <input type="checkbox" id="record-completed"> 已完成
+          <label>日期：</label><input type="date" id="record-date" required>
+          <label style="margin-left:20px;">状态：</label><input type="checkbox" id="record-completed"> 已完成
         </div>
         <textarea id="record-content" rows="4" placeholder="记录你的学习心得、笔记（支持 Markdown 语法）..."></textarea>
-        <div class="form-row">
-          <label>上传图片：</label>
-          <input type="file" id="record-images" accept="image/*" multiple>
-        </div>
+        <div class="form-row"><label>上传图片：</label><input type="file" id="record-images" accept="image/*" multiple></div>
         <button type="submit" class="btn-primary">保存记录</button>
       </form>
     </div>
 
-    <!-- 历史记录列表 -->
     <div class="section">
       <h2>📝 历史记录</h2>
       <div id="records-list"></div>
