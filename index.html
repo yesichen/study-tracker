@@ -51,6 +51,119 @@
     .record-content p { margin-bottom: 8px; }
     .record-content pre { background: #f6f8fa; padding: 10px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
     .record-content code { background: #f6f8fa; padding: 2px 4px; border-radius: 4px; font-size: 13px; }
+        /* === 登录页居中布局 === */
+    #login-container {
+      min-height: calc(100vh - 40px); /* 减去 body 的 padding */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
+      width: 100%;
+    }
+    #login-container > h1, #login-container > p, #login-container > form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* === 猫头鹰容器 === */
+    .owl-container {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .owl {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      transition: all 0.3s ease;
+    }
+    /* 猫头鹰耳朵 */
+    .owl-ear {
+      position: absolute;
+      top: 0;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid #A67B5B;
+    }
+    .owl-ear.left { left: 10px; transform: rotate(-20deg); }
+    .owl-ear.right { right: 10px; transform: rotate(20deg); }
+
+    /* 猫头鹰脸 */
+    .owl-face {
+      position: absolute;
+      top: 20px;
+      left: 0;
+      width: 120px;
+      height: 90px;
+      background: #E6C28C;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: inset 0 -10px 0 rgba(0,0,0,0.05);
+    }
+    /* 猫头鹰眼睛 */
+    .owl-eye {
+      position: absolute;
+      top: 20px;
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: 50%;
+      border: 3px solid #5C4033;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .owl-eye.left { left: 15px; }
+    .owl-eye.right { right: 15px; }
+    .owl-pupil {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      background: #000;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+    /* 猫头鹰嘴巴 */
+    .owl-beak {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-top: 12px solid #E8A317;
+    }
+    /* 猫头鹰翅膀 */
+    .owl-wing {
+      position: absolute;
+      bottom: -10px;
+      width: 35px;
+      height: 70px;
+      background: #A67B5B;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+    .owl-wing.left { left: -5px; transform-origin: bottom center; }
+    .owl-wing.right { right: -5px; transform-origin: bottom center; }
+
+    /* === 动画状态 === */
+    /* 输入账号：眼睛睁大 */
+    .owl.typing-email .owl-pupil { width: 24px; height: 24px; }
+    .owl.typing-email .owl-eye { top: 15px; height: 45px; }
+
+    /* 输入密码：翅膀抬起遮住眼睛 */
+    .owl.typing-password .owl-wing.left { bottom: 30px; left: 15px; transform: rotate(-40deg); }
+    .owl.typing-password .owl-wing.right { bottom: 30px; right: 15px; transform: rotate(40deg); }
+    .owl.typing-password .owl-pupil { width: 10px; height: 10px; }
   </style>
 </head>
 <body>
